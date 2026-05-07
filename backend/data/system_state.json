@@ -1,0 +1,12 @@
+{
+  "simulationRunning": false,
+  "activeAttack": null,
+  "systemStatus": "safe",
+  "threatScore": 0,
+  "cpu": 12,
+  "memory": 34,
+  "startedAt": null,
+  "stoppedAt": null,
+  "totalAlertsGenerated": 0,
+  "totalSimulationsRun": 0
+}

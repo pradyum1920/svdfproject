@@ -1,0 +1,284 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Google Fonts already loaded via <link> ── */
+
+/* ── Base Reset ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Exo 2', sans-serif;
+  background-color: #020b04;
+  color: #00ff41;
+  overflow-x: hidden;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: #030808; }
+::-webkit-scrollbar-thumb { background: #00b32b; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #00ff41; }
+
+/* ── Selection ── */
+::selection { background: rgba(0,255,65,0.3); color: #00ff41; }
+
+/* ── Terminal cursor ── */
+.cursor::after {
+  content: '█';
+  animation: blink 1s step-end infinite;
+  color: #00ff41;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Matrix rain canvas ── */
+#matrix-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.04;
+}
+
+/* ── Scanlines overlay ── */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.15) 2px,
+    rgba(0,0,0,0.15) 4px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── CRT flicker ── */
+@keyframes crtFlicker {
+  0%   { opacity: 1; }
+  5%   { opacity: 0.97; }
+  10%  { opacity: 1; }
+  50%  { opacity: 0.98; }
+  100% { opacity: 1; }
+}
+
+.crt { animation: crtFlicker 8s infinite; }
+
+/* ── Green glow text ── */
+.glow-text {
+  text-shadow:
+    0 0 7px rgba(0,255,65,0.9),
+    0 0 20px rgba(0,255,65,0.5),
+    0 0 40px rgba(0,255,65,0.3);
+}
+
+.glow-text-sm {
+  text-shadow:
+    0 0 4px rgba(0,255,65,0.8),
+    0 0 10px rgba(0,255,65,0.4);
+}
+
+/* ── Panel card ── */
+.cyber-panel {
+  background: rgba(5,15,7,0.85);
+  border: 1px solid rgba(0,255,65,0.15);
+  border-radius: 4px;
+  box-shadow:
+    0 0 20px rgba(0,255,65,0.05),
+    inset 0 0 30px rgba(0,255,65,0.02);
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0,255,65,0.4), transparent);
+}
+
+/* ── Corner decoration ── */
+.panel-corner::before,
+.panel-corner::after {
+  content: '';
+  position: absolute;
+  width: 8px; height: 8px;
+  border-color: rgba(0,255,65,0.5);
+  border-style: solid;
+}
+.panel-corner::before { top: 4px; left: 4px; border-width: 1px 0 0 1px; }
+.panel-corner::after  { top: 4px; right: 4px; border-width: 1px 1px 0 0; }
+
+/* ── Hex grid background ── */
+.hex-bg {
+  background-image:
+    radial-gradient(ellipse at top, rgba(0,255,65,0.06) 0%, transparent 60%),
+    linear-gradient(rgba(0,255,65,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,255,65,0.02) 1px, transparent 1px);
+  background-size: auto, 40px 40px, 40px 40px;
+}
+
+/* ── Neon button ── */
+.btn-neon {
+  position: relative;
+  background: transparent;
+  border: 1px solid rgba(0,255,65,0.5);
+  color: #00ff41;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.25rem;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.btn-neon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,255,65,0);
+  transition: background 0.3s ease;
+}
+
+.btn-neon:hover {
+  border-color: rgba(0,255,65,0.9);
+  box-shadow: 0 0 20px rgba(0,255,65,0.4);
+  text-shadow: 0 0 8px rgba(0,255,65,0.8);
+}
+
+.btn-neon:hover::before {
+  background: rgba(0,255,65,0.08);
+}
+
+/* ── Terminal styles ── */
+.terminal-body {
+  font-family: 'Share Tech Mono', monospace;
+  background: rgba(2,11,4,0.95);
+  border: 1px solid rgba(0,255,65,0.2);
+  color: #00ff41;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  padding: 0.75rem;
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+.terminal-line-error  { color: #ef4444; }
+.terminal-line-warn   { color: #f59e0b; }
+.terminal-line-info   { color: #00ff41; }
+.terminal-line-system { color: #60a5fa; }
+
+/* ── Progress bar ── */
+.progress-bar {
+  height: 4px;
+  background: rgba(0,255,65,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #00b32b, #00ff41);
+  box-shadow: 0 0 8px rgba(0,255,65,0.6);
+  transition: width 0.5s ease;
+}
+
+/* ── Status indicators ── */
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.status-dot.safe     { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.8); }
+.status-dot.warning  { background: #f59e0b; box-shadow: 0 0 8px rgba(245,158,11,0.8); }
+.status-dot.critical { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.8); animation: blink 0.8s step-end infinite; }
+
+/* ── Chart overrides ── */
+.recharts-tooltip-wrapper .recharts-default-tooltip {
+  background: rgba(5,15,7,0.95) !important;
+  border: 1px solid rgba(0,255,65,0.3) !important;
+  font-family: 'Share Tech Mono', monospace !important;
+  color: #00ff41 !important;
+  font-size: 0.75rem !important;
+}
+
+/* ── Toast overrides ── */
+.custom-toast {
+  font-family: 'Share Tech Mono', monospace !important;
+  font-size: 0.8rem !important;
+  background: rgba(5,15,7,0.98) !important;
+  border: 1px solid rgba(0,255,65,0.3) !important;
+  color: #00ff41 !important;
+}
+
+/* ── Hover row table ── */
+.log-row:hover td { background: rgba(0,255,65,0.04) !important; }
+
+/* ── Typewriter animation ── */
+@keyframes typing {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+.typewriter {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing 2s steps(40, end) forwards;
+}
+
+/* ── Noise overlay ── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+}
+
+/* ── Loading spinner ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 1s linear infinite; }
+
+/* ── Sidebar nav item ── */
+.nav-item {
+  position: relative;
+  transition: all 0.2s ease;
+}
+.nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, #00ff41, transparent);
+  box-shadow: 0 0 8px rgba(0,255,65,0.8);
+}
+
+/* ── Attack type badge ── */
+.attack-badge {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
